@@ -682,9 +682,11 @@ export default function Dashboard() {
                     <input
                       type="text"
                       required
+                      pattern="[0-9\-+\s()]+"
+                      title="Phone number should only contain numbers, +, -, and spaces."
                       value={regPhone}
                       onChange={(e) => setRegPhone(e.target.value)}
-                      placeholder="555-0199 (Unchecked format)"
+                      placeholder="555-0199"
                       className="block w-full px-3 py-2 border border-gray-200 bg-white/50 rounded-lg text-gray-900 text-sm focus:outline-none"
                     />
                   </div>

@@ -89,6 +89,11 @@ router.post('/', authenticate, async (req, res) => {
       return res.status(400).json({ error: 'Name, phoneNumber, age, and gender are required.' });
     }
 
+    const phoneRegex = /^[0-9\-+\s()]+$/;
+    if (!phoneRegex.test(phoneNumber)) {
+      return res.status(400).json({ error: 'Invalid phone number format. Only numbers, +, -, and spaces are allowed.' });
+    }
+
     const patient = await prisma.patient.create({
       data: {
         name,
