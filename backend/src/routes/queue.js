@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 
 // GET /api/queue
 // List all active queue tokens
-router.get('/', authenticate, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const { doctorId, status } = req.query;
 
@@ -18,8 +18,13 @@ router.get('/', authenticate, async (req, res) => {
     const tokens = await prisma.queueToken.findMany({
       where,
       include: {
-        patient: true,
-        doctor: true,
+        doctor: {
+          select: {
+            id: true,
+            name: true,
+            specialization: true
+          }
+        }
       },
       orderBy: { createdAt: 'asc' },
     });

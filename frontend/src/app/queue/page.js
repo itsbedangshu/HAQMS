@@ -118,7 +118,7 @@ export default function QueueMonitor() {
                     {docInfo.calling ? (
                       <div className="bg-blue-50 border border-blue-200 p-6 rounded-lg text-center shadow-sm">
                         <span className="block text-4xl font-bold text-blue-700">#{docInfo.calling.tokenNumber}</span>
-                        <span className="block text-sm font-medium text-gray-700 mt-2">Patient: {docInfo.calling.patient.name}</span>
+                        <span className="block text-sm font-medium text-gray-700 mt-2">Proceed to Consultation</span>
                       </div>
                     ) : (
                       <div className="bg-gray-50 border border-gray-200 p-6 rounded-lg text-center">
@@ -133,7 +133,7 @@ export default function QueueMonitor() {
                     {docInfo.waiting.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {docInfo.waiting.map((token) => (
-                          <div key={token.id} className="px-3 py-1.5 rounded bg-gray-100 border border-gray-300 text-sm font-semibold text-gray-800" title={`Patient: ${token.patient.name}`}>
+                          <div key={token.id} className="px-3 py-1.5 rounded bg-gray-100 border border-gray-300 text-sm font-semibold text-gray-800">
                             #{token.tokenNumber}
                           </div>
                         ))}
