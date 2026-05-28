@@ -522,9 +522,12 @@ export default function Dashboard() {
 
                   {/* Table listing */}
                   {patientsLoading ? (
-                    <p className="text-center py-6 text-gray-600 animate-pulse text-sm">
-                      Synchronizing table data...
-                    </p>
+                    <div className="flex flex-col items-center justify-center py-12">
+                      <div className="w-10 h-10 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin"></div>
+                      <p className="mt-4 text-base font-semibold text-gray-600 animate-pulse">
+                        Synchronizing table data...
+                      </p>
+                    </div>
                   ) : patients.length === 0 ? (
                     <p className="text-center py-6 text-gray-600 text-sm">
                       No registered patients match this filter.

@@ -59,23 +59,10 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* Assessment Notice Box */}
-        <div className="mt-16 bg-white max-w-xl mx-auto p-6 rounded-lg border border-red-200 shadow-sm flex gap-4 text-left">
-          <div className="p-2 bg-red-50 text-red-600 rounded h-fit">
-            <ShieldAlert className="h-6 w-6" />
-          </div>
-          <div>
-            <h3 className="font-bold text-gray-900">Assessment Environment Notice</h3>
-            <p className="mt-1 text-gray-600 text-base">
-              This repository contains critical architectural, database performance, frontend memory, and security bugs. 
-              Your evaluation criteria will measure your ability to identify, trace, profile, and fix these issues systematically.
-            </p>
-          </div>
-        </div>
       </div>
 
-      <footer className="text-center text-gray-500 text-sm mt-12">
-        HAQMS v1.0.0-deliberate-bugs &copy; {new Date().getFullYear()} Candidate Evaluation Framework.
+      <footer className="text-center text-gray-500 text-sm mt-12 pb-8">
+        HAQMS &copy; {new Date().getFullYear()} All rights reserved.
       </footer>
     </div>
   );
