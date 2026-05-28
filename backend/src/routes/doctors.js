@@ -7,8 +7,6 @@ const prisma = new PrismaClient();
 
 // GET /api/doctors
 // Retrieve list of doctors with special search filtering
-// SECURITY BUG: SQL Injection vulnerability in the search parameter!
-// Uses queryRawUnsafe with string concatenation instead of parameterized inputs.
 router.get('/', authenticate, async (req, res) => {
   try {
     const { search, specialization } = req.query;
@@ -35,7 +33,6 @@ router.get('/', authenticate, async (req, res) => {
 
 // GET /api/doctors/stats
 // Returns aggregation details about available doctors
-// PERFORMANCE BUG: Sequential async calls instead of Promise.all()
 router.get('/stats', authenticate, async (req, res) => {
   try {
     const start = Date.now();
@@ -57,10 +54,6 @@ router.get('/stats', authenticate, async (req, res) => {
         surgeons: surgeonsCount,
         averageFee: Math.round(averageFee._avg.consultationFee || 0),
         maxExperience: highestExperience._max.experience || 0,
-      },
-      debugInfo: {
-        executionTimeMs: durationMs,
-        notes: 'Loaded sequentially for safety. Optimization needed.'
       }
     });
   } catch (error) {

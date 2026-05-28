@@ -7,9 +7,6 @@ const prisma = new PrismaClient();
 
 // GET /api/appointments
 // List all appointments
-// PERFORMANCE BUG: Classic N+1 Query Issue!
-// Instead of using Prisma's include, it loops through each appointment and executes
-// individual select statements for Patient and Doctor details.
 router.get('/', authenticate, async (req, res) => {
   try {
     const { doctorId, status } = req.query;
@@ -44,9 +41,6 @@ router.get('/', authenticate, async (req, res) => {
 
 // POST /api/appointments
 // Book an appointment
-// DESIGN BUG: Duplicate-prone schema. No unique index blocks duplicate appointment bookings.
-// In this API, we have a half-hearted verification that is easily bypassed or logically flawed,
-// allowing multiple bookings for the exact same date and doctor.
 router.post('/', authenticate, async (req, res) => {
   try {
     const { patientId, doctorId, appointmentDate, reason } = req.body;
@@ -57,10 +51,7 @@ router.post('/', authenticate, async (req, res) => {
 
     const appDate = new Date(appointmentDate);
 
-    // Flawed duplicate check:
-    // It only checks if the exact millisecond matches. If the candidate books for "2026-05-25 10:00:00"
-    // and another for "2026-05-25 10:00:01", they are treated as unique!
-    // Junior dev logic: "Same time bookings will be blocked."
+    // Check if the doctor already has an appointment at this time
     const existingBooking = await prisma.appointment.findFirst({
       where: {
         doctorId,
@@ -71,7 +62,7 @@ router.post('/', authenticate, async (req, res) => {
 
     if (existingBooking) {
       return res.status(400).json({
-        error: 'Double booking blocked. Doctor already has an appointment at this exact millisecond.',
+        error: 'This time slot is already booked for this doctor. Please choose a different time.',
       });
     }
 
