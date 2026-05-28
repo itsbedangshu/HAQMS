@@ -34,13 +34,13 @@ export default function Dashboard() {
     }
   }, [user]);
 
-  if (!user) return null;
+  // Early return removed to obey Rules of Hooks
 
   // Global State
   const [activeTab, setActiveTab] = useState(
-    user.role === "ADMIN"
+    user?.role === "ADMIN"
       ? "reports"
-      : user.role === "RECEPTIONIST"
+      : user?.role === "RECEPTIONIST"
         ? "patients"
         : "appointments",
   );
@@ -125,7 +125,7 @@ export default function Dashboard() {
 
   // Trigger Patient List Fetch with Debounce to fix performance bug
   useEffect(() => {
-    if (user.role === "RECEPTIONIST" || user.role === "ADMIN") {
+    if (user?.role === "RECEPTIONIST" || user?.role === "ADMIN") {
       const timeoutId = setTimeout(() => {
         fetchPatients(1);
       }, 300);
@@ -231,7 +231,7 @@ export default function Dashboard() {
       if (res.ok) {
         setBookingMessage("Success: Appointment booked successfully!");
         setBookingReason("");
-        if (user.role === "DOCTOR") fetchDoctorWorklist();
+        if (user?.role === "DOCTOR") fetchDoctorWorklist();
       } else {
         setBookingMessage(`Error: ${data.error || "Failed to book"}`);
       }
@@ -285,7 +285,7 @@ export default function Dashboard() {
         setCheckinMessage(
           `Checked in! Generated Token #${data.token.tokenNumber}`,
         );
-        if (user.role === "DOCTOR") fetchDoctorWorklist();
+        if (user?.role === "DOCTOR") fetchDoctorWorklist();
       } else {
         setCheckinMessage(`Error check-in: ${data.error}`);
       }
@@ -300,10 +300,10 @@ export default function Dashboard() {
   // DOCTOR WORKFLOW FUNCTIONS
   // ==========================================
   const fetchDoctorWorklist = async () => {
-    if (user.role !== "DOCTOR") return;
+    if (user?.role !== "DOCTOR") return;
     try {
       // Find matching doctor from doctors dropdown using user ID link
-      const matchedDoc = doctorsList.find((d) => d.userId === user.id);
+      const matchedDoc = doctorsList.find((d) => d.userId === user?.id);
       if (!matchedDoc) return;
 
       // 1. Fetch appointments for this doctor (N+1 database queries triggers inside server)
@@ -333,7 +333,7 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (user.role === "DOCTOR" && doctorsList.length > 0) {
+    if (user?.role === "DOCTOR" && doctorsList.length > 0) {
       fetchDoctorWorklist();
     }
   }, [doctorsList]);
@@ -419,6 +419,8 @@ export default function Dashboard() {
     }
   };
 
+  if (!user) return null;
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -426,7 +428,7 @@ export default function Dashboard() {
       <main className="flex-1 max-w-7xl w-full mx-auto p-6 sm:p-8">
         {/* Navigation Tabs based on Role */}
         <div className="flex border-b border-gray-200 mb-8 overflow-x-auto gap-4">
-          {user.role === "ADMIN" && (
+          {user?.role === "ADMIN" && (
             <>
               <button
                 onClick={() => setActiveTab("reports")}
@@ -443,7 +445,7 @@ export default function Dashboard() {
             </>
           )}
 
-          {(user.role === "RECEPTIONIST" || user.role === "ADMIN") && (
+          {(user?.role === "RECEPTIONIST" || user?.role === "ADMIN") && (
             <>
               <button
                 onClick={() => setActiveTab("patients")}
@@ -460,7 +462,7 @@ export default function Dashboard() {
             </>
           )}
 
-          {user.role === "DOCTOR" && (
+          {user?.role === "DOCTOR" && (
             <>
               <button
                 onClick={() => setActiveTab("appointments")}
@@ -1003,7 +1005,7 @@ export default function Dashboard() {
                                 <button
                                   onClick={() => {
                                     const matchedDoc = doctorsList.find(
-                                      (d) => d.userId === user.id,
+                                      (d) => d.userId === user?.id,
                                     );
                                     handleQueueCheckin(
                                       app.patientId,
