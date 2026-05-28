@@ -51,7 +51,6 @@ model Doctor {
   availableTo     String   @default("17:00")
   createdAt       DateTime @default(now())
 
-  createdAt       DateTime @default(now())
   @@index([department])
   @@index([specialization])
 
@@ -84,11 +83,9 @@ model Appointment {
   status          AppointmentStatus @default(PENDING)
   createdAt       DateTime          @default(now())
 
-  createdAt       DateTime          @default(now())
   @@index([doctorId, status])
   @@index([patientId])
   
-  @@index([patientId])
   @@unique([doctorId, appointmentDate])
 
   queueTokens QueueToken[]
@@ -106,7 +103,6 @@ model QueueToken {
   status        QueueStatus @default(WAITING)
   createdAt     DateTime    @default(now())
 
-  createdAt     DateTime    @default(now())
   @@index([doctorId, createdAt])
   @@index([status])
 
