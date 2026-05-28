@@ -868,11 +868,7 @@ export default function Dashboard() {
               </p>
 
               <div className="space-y-6">
-                <div className="p-4 rounded-xl border border-blue-200 bg-blue-50 text-gray-700 text-base leading-5">
-                  <strong>Token Generation Engine Note:</strong> Direct arrivals
-                  bypass appointments. The token engine automatically fetches
-                  the current days maximum token size and increments.
-                </div>
+
 
                 <div className="space-y-4 text-base font-semibold text-gray-700">
                   <div>
