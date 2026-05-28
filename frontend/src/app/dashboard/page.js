@@ -1166,32 +1166,15 @@ export default function Dashboard() {
                     <div></div>
                   </div>
                   <p className="mt-4 text-base font-semibold text-gray-600 animate-pulse">
-                    Executing sequential nested loop aggregates. Event loop is
-                    locked...
+                    Executing report aggregates...
                   </p>
                 </div>
               ) : !adminReportData ? (
                 <div className="p-8 text-center bg-gray-50 rounded-xl text-gray-600 text-base font-semibold border border-dashed border-gray-200">
-                  Click the button above to load reports. Warning: Endpoint is
-                  extremely slow on larger doctor count tables!
+                  Click the button above to load reports.
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {/* Reporting details benchmark */}
-                  <div className="flex items-center gap-3 p-3 bg-amber-500/10 text-gray-700 text-base rounded-lg border border-amber-500/20 leading-5">
-                    <Clock className="h-5 w-5 text-amber-500 shrink-0" />
-                    <div>
-                      <strong>Performance Diagnostic:</strong> API execution
-                      resolved in{" "}
-                      <span className="font-bold text-amber-500">
-                        {adminReportData.timeTakenMs} ms
-                      </span>
-                      . Sequential nested database calls loops reduce
-                      throughput. Optimization using Promise.all or single join
-                      aggregate is required.
-                    </div>
-                  </div>
-
                   {/* Summary widgets */}
                   <div className="grid gap-4 sm:grid-cols-3">
                     <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl">
