@@ -65,6 +65,7 @@ export default function Dashboard() {
   const [regGender, setRegGender] = useState("Male");
   const [regHistory, setRegHistory] = useState("");
   const [regMessage, setRegMessage] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
 
   // Queue and Appointment Booking
   const [doctorsList, setDoctorsList] = useState([]);
@@ -74,6 +75,8 @@ export default function Dashboard() {
   const [bookingReason, setBookingReason] = useState("");
   const [bookingMessage, setBookingMessage] = useState("");
   const [checkinMessage, setCheckinMessage] = useState("");
+  const [isBooking, setIsBooking] = useState(false);
+  const [isCheckingIn, setIsCheckingIn] = useState(false);
 
   // ==========================================
   // STATE FOR DOCTOR WORKFLOWS
@@ -151,6 +154,7 @@ export default function Dashboard() {
   const handleRegisterPatient = async (e) => {
     e.preventDefault();
     setRegMessage("");
+    setIsRegistering(true);
 
     // INCONSISTENT VALIDATION: Receptionist form doesn't validate telephone structure on client,
     // leading to database pollution (e.g. text telephone values)
@@ -192,6 +196,8 @@ export default function Dashboard() {
       }
     } catch (err) {
       setRegMessage(`Error: ${err.message}`);
+    } finally {
+      setIsRegistering(false);
     }
   };
 
@@ -199,6 +205,7 @@ export default function Dashboard() {
   const handleBookAppointment = async (e) => {
     e.preventDefault();
     setBookingMessage("");
+    setIsBooking(true);
 
     if (!bookingPatientId || !bookingDoctorId || !bookingDate) {
       setBookingMessage("Error: All booking fields are required.");
@@ -230,6 +237,8 @@ export default function Dashboard() {
       }
     } catch (err) {
       setBookingMessage(`Error: ${err.message}`);
+    } finally {
+      setIsBooking(false);
     }
   };
 
@@ -261,6 +270,7 @@ export default function Dashboard() {
     appointmentId = null,
   ) => {
     setCheckinMessage("");
+    setIsCheckingIn(true);
     try {
       const res = await fetch(`${API_BASE_URL}/queue/checkin`, {
         method: "POST",
@@ -281,6 +291,8 @@ export default function Dashboard() {
       }
     } catch (err) {
       setCheckinMessage(`Error: ${err.message}`);
+    } finally {
+      setIsCheckingIn(false);
     }
   };
 
@@ -720,9 +732,17 @@ export default function Dashboard() {
 
                   <button
                     type="submit"
-                    className="w-full py-2.5 bg-blue-600 hover:bg-blue-600 text-white font-extrabold text-sm rounded-lg shadow-md transition-colors duration-300 mt-2"
+                    disabled={isRegistering}
+                    className="w-full py-2.5 bg-blue-600 hover:bg-blue-600 text-white font-extrabold text-sm rounded-lg shadow-md transition-colors duration-300 mt-2 disabled:opacity-70 flex items-center justify-center gap-2"
                   >
-                    Register Patient Record
+                    {isRegistering ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Registering...
+                      </>
+                    ) : (
+                      "Register Patient Record"
+                    )}
                   </button>
                 </form>
               </div>
@@ -820,9 +840,17 @@ export default function Dashboard() {
 
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-600 text-white font-extrabold text-sm rounded-lg shadow-md transition-colors duration-300 mt-2"
+                  disabled={isBooking}
+                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-600 text-white font-extrabold text-sm rounded-lg shadow-md transition-colors duration-300 mt-2 disabled:opacity-70 flex items-center justify-center gap-2"
                 >
-                  Book Appointment Slot
+                  {isBooking ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      Booking...
+                    </>
+                  ) : (
+                    "Book Appointment Slot"
+                  )}
                 </button>
               </form>
             </div>
@@ -891,9 +919,17 @@ export default function Dashboard() {
                       }
                       handleQueueCheckin(pId, dId);
                     }}
-                    className="w-full py-2.5 bg-gray-50 hover:bg-gray-50 text-white :bg-blue-600 font-extrabold text-sm rounded-lg shadow-md transition-colors duration-300 mt-2"
+                    disabled={isCheckingIn}
+                    className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-sm rounded-lg shadow-md transition-colors duration-300 mt-2 disabled:opacity-70 flex items-center justify-center gap-2"
                   >
-                    Generate Live Token
+                    {isCheckingIn ? (
+                      <>
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Generating...
+                      </>
+                    ) : (
+                      "Generate Live Token"
+                    )}
                   </button>
                 </div>
               </div>
